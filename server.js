@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const Kickbox = require('kickbox').client;
-const kickbox = new Kickbox('live_ab5b57be0f5e867f4483bcc3d1dae66cb2b607a7b591a62c97173130d6f93e97').kickbox();
+const kickbox = new Kickbox(process.env.KICKBOX_API_KEY).kickbox();
 const bodyParser = require('body-parser');
-const cors = require('cors'); 
+const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 
 app.use(bodyParser.json()); 
 app.use(express.json());
