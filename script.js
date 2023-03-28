@@ -1,12 +1,50 @@
+
+
+
 const form = document.getElementById("signUpForm");
+
+const klaviyoPublicKey = "Qg3FLb";
+
+const klaviyoListID = "VgPaZB";
+
+const message = document.getElementById("error-display");
+
+const klaviyoSubscribe = (klaviyoListID, email, firstName, lastName, klaviyoPublicKey) => {
+    const options = {
+        method: 'POST',
+        headers: {revision: '2023-02-22', 'content-type': 'application/json'},
+        body: JSON.stringify({
+            data: {
+            type: 'subscription',
+            attributes: {
+                list_id: klaviyoListID,
+                custom_source: 'Custom Source - Verified Email',
+                email: email,
+                properties: {
+                    $first_name: firstName,
+                    $last_name: lastName,
+                    'Kickbox Verified': true
+                    }
+                }
+            }
+        })
+    };
+
+    fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${klaviyoPublicKey}`, options)
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
+}
 
 form.addEventListener("submit", function(event) {
     event.preventDefault();
 
     const email = document.getElementById("email").value;
+
     const firstName = document.getElementById("firstName").value;
+
     const lastName = document.getElementById("lastName").value;
-    const message = document.getElementById("error-display");
+
 
     const data = JSON.stringify({email, firstName, lastName})
 
@@ -29,9 +67,10 @@ form.addEventListener("submit", function(event) {
                 message.innerText = "Please submit a valid email address."
 
             } else {
-                // Subscribe for Email Marketing in Klaviyo
-
                 message.innerText = ""
+
+                // Subscribe for Email Marketing in Klaviyo
+                klaviyoSubscribe(klaviyoListID, email, firstName, lastName, klaviyoPublicKey)
                 
 
             }

@@ -20,8 +20,6 @@ let kickBoxResults = {};
 app.post('/', (req, res) => {
 
   const email = req.body.email;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
 
 
   kickbox.verify(email, function (err, response) {
@@ -39,12 +37,10 @@ app.post('/', (req, res) => {
         "Reason": kickboxLookup["reason"],
         "Disposable": kickboxLookup["disposable"]
       }
-
     }
       console.log(kickBoxResults)
       res.send(kickBoxResults)
   })
-
 })
 
 app.get('/', (req, res) => {
