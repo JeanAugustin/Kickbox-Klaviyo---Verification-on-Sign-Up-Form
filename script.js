@@ -1,6 +1,3 @@
-
-
-
 const form = document.getElementById("signUpForm");
 
 const klaviyoPublicKey = "Qg3FLb";
@@ -45,6 +42,7 @@ form.addEventListener("submit", function(event) {
 
     const lastName = document.getElementById("lastName").value;
 
+    const submitButton = document.getElementById("submitButton");
 
     const data = JSON.stringify({email, firstName, lastName})
 
@@ -65,6 +63,13 @@ form.addEventListener("submit", function(event) {
             if (data["Result"] === "undeliverable") {
                 
                 message.innerText = "Please submit a valid email address."
+                submitButton.disabled = true // Disables button if inputted email is invalid
+            
+                setTimeout(() => {
+                    submitButton.disabled = false; // Re-enables button after 3 seconds
+                }, 3000); 
+                
+
 
             } else {
                 message.innerText = ""
