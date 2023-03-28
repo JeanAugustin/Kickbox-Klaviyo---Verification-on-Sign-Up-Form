@@ -1,10 +1,10 @@
+const klaviyoPublicKey = "Qg3FLb"; // Klaviyo Account ID
+
+const klaviyoListID = "VgPaZB"; // Klaviyo List ID
+
 const form = document.getElementById("signUpForm");
 
-const klaviyoPublicKey = "Qg3FLb";
-
-const klaviyoListID = "VgPaZB";
-
-const message = document.getElementById("error-display");
+const displayMessage = document.getElementById("error-display");
 
 const klaviyoSubscribe = (klaviyoListID, email, firstName, lastName, klaviyoPublicKey) => {
     const options = {
@@ -45,7 +45,6 @@ form.addEventListener("submit", function(event) {
     const submitButton = document.getElementById("submitButton");
 
     const data = JSON.stringify({email, firstName, lastName})
-
     console.log(data)
 
     fetch('http://localhost:3000/', {
@@ -60,24 +59,22 @@ form.addEventListener("submit", function(event) {
         .then(data => {
             console.log(data)
             
-            if (data["Result"] === "undeliverable") {
+            if (data["Result"] === "undeliverable" || data["Disposable"] === true) {
                 
-                message.innerText = "Please submit a valid email address."
+                displayMessage.innerText = "Please submit a valid email address."
                 submitButton.disabled = true // Disables button if inputted email is invalid
             
                 setTimeout(() => {
                     submitButton.disabled = false; // Re-enables button after 3 seconds
                 }, 3000); 
-                
-
 
             } else {
-                message.innerText = ""
+                displayMessage.innerText = ""
 
                 // Subscribe for Email Marketing in Klaviyo
                 klaviyoSubscribe(klaviyoListID, email, firstName, lastName, klaviyoPublicKey)
+                form.reset()
                 
-
             }
         })
         .catch(error => console.log(error))
